@@ -1,14 +1,15 @@
 
-const categories = require('../services/mysql')
+const db = require('../services/mysql')
+
 const routes = (server) => {
-  server.get('category', (req, res, next) => {
-    categories.then(categories => {
-      res.send(categories)
+  server.get('category', async (req, res, next) => {
+    try {
+      res.send(await db.categories().all())
       next()
-    }).catch(error => {
+    } catch (error) {
       res.send(error)
       next()
-    })
+    }
   })
   server.post('category', (req, res, next) => {
     const { name } = req.params
